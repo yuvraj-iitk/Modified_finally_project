@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+.page {
+  padding-top: 28px;
+  padding-bottom: 40px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 440px;
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+  align-items: center;
+}
+.navbar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.MuiTableCell-root {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
