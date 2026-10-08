@@ -19,7 +19,7 @@ Start with the [frontend revision guide](frontend/docs/README.md). It links to e
 3. In `backend`, create a Python virtual environment and install FastAPI, Uvicorn, SQLAlchemy, `python-jose[cryptography]`, Requests, and `python-dotenv`. Set `KEYCLOAK_ADMIN_USERNAME` and `KEYCLOAK_ADMIN_PASSWORD` in a local `.env` file.
 4. Run `uvicorn main:app --reload --port 8000` from the `backend` directory. Its SQLite path is relative to the working directory.
 5. Set up local roles, tenants, and accounts through the existing admin APIs using an account with the Keycloak `admin` realm role. Create the local `user` role before customer signup. SQLite data and Keycloak realm data are not included in this repository.
-6. In `frontend`, run `npm ci`, then `npm run dev`. The default port is 5173. Use `npm run dev -- --port 5174` if needed, and configure Keycloak redirects/origin for that port.
+6. In `frontend`, run `npm ci`, then `npm run dev`. The frontend binds only to localhost on port 5174. Configure Keycloak redirects for http://localhost:5174/ and its web origin as http://localhost:5174.
 
 Backend API documentation: http://localhost:8000/docs. Create customers through frontend Signup and sellers through Admin Users so their local database records are created alongside Keycloak accounts. The backend normalizes newly created usernames to lowercase.
 

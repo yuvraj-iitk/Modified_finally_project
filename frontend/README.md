@@ -11,15 +11,15 @@ Start with the [frontend revision guide](docs/README.md). It links to a separate
 1. Start Keycloak from the project `keycloak` folder: `docker compose up -d`.
 2. Start the backend from the project `backend` folder: `venv/bin/uvicorn main:app --reload --port 8000`. Run from this folder because the SQLite database path is relative.
 3. In this `frontend` folder, run `npm install` and `npm run dev`.
-4. Open http://localhost:5173. Use `localhost`, because the existing Keycloak client redirects to that hostname.
+4. Open http://localhost:5174/. The development server binds only to localhost and does not expose network addresses.
 
-Vite forwards /api requests to the backend during development. If port 5173 is occupied, stop the existing frontend server before running this app there. You can preview public pages with `npm run dev -- --port 5174`, but Keycloak login requires its registered port 5173 unless additional redirect URLs and web origins are configured.
+Vite forwards /api requests to the backend during development. The server uses port 5174 with strictPort enabled; if that port is occupied, it reports an error instead of switching ports.
 
 Optional: copy `.env.example` to `.env` to change service URLs or the client ID. All VITE variables are browser-visible. Never add client secrets or admin credentials.
 
 ## Keycloak
 
-The app uses the existing public `ecommerce-frontend` client in the `ecommerce` realm, standard authorization code flow with PKCE S256, and in-memory tokens. The client needs `http://localhost:5173/*` as a valid redirect URI and `http://localhost:5173` as a web origin. Login opens the standard Keycloak login page. Logout returns to the frontend root URL. Add that exact URL to Valid post logout redirect URIs in Keycloak (http://localhost:5173/ for port 5173, or http://localhost:5174/ for port 5174).
+The app uses the existing public `ecommerce-frontend` client in the `ecommerce` realm, standard authorization code flow with PKCE S256, and in-memory tokens. The client needs `http://localhost:5174/` as a valid redirect URI and `http://localhost:5174` as a web origin. Login opens the standard Keycloak login page. Logout returns to the frontend root URL. Add that exact URL to Valid post logout redirect URIs in Keycloak (http://localhost:5174/).
 
 Application realm roles: `user`, `tenant`, and `admin`. Backend role checks enforce permissions; frontend checks control page navigation only. Users and sellers must also exist in the backend database. Tenant accounts must be linked to a tenant. The local `user` role and matching Keycloak realm role must exist before signup can work.
 

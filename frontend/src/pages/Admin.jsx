@@ -33,6 +33,12 @@ export default function Admin({ kind }) {
       const [r, t] = await Promise.all([api("/roles"), api("/tenants")]);
       setRoles(r);
       setTenants(t);
+      const tenantRole = r.find((role) => role.name === "tenant");
+      setForm((current) =>
+        current.role_id === "" && tenantRole
+          ? { ...current, role_id: tenantRole.id }
+          : current,
+      );
     }
   }
   useEffect(() => {
@@ -56,7 +62,13 @@ export default function Admin({ kind }) {
         : { name: form.name.trim() };
     try {
       await api(`/${kind}`, { method: "POST", body });
-      setForm(blank);
+      setForm({
+        ...blank,
+        role_id:
+          kind === "users"
+            ? roles.find((role) => role.name === "tenant")?.id ?? ""
+            : "",
+      });
       setSuccess("Created successfully.");
       await load();
     } catch (err) {
@@ -112,9 +124,9 @@ export default function Admin({ kind }) {
               value={form.role_id}
               onChange={(e) => setForm({ ...form, role_id: e.target.value })}
             >
-              {roles.map((r) => (
-                <MenuItem key={r.id} value={r.id}>
-                  {r.name}
+              {roles.filter((role) => role.name === "tenant").map((role) => (
+                <MenuItem key={role.id} value={role.id}>
+                  Tenant
                 </MenuItem>
               ))}
             </TextField>
